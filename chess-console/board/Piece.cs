@@ -6,8 +6,8 @@
         public int movmentsAmount { get; protected set; }
         public Board board { get; protected set; }
 
-        public Piece(Position position, Board board, Color color) {
-            this.position = position;
+        public Piece(Board board, Color color) {
+            this.position = null;
             this.board = board;
             this.color = color;
             movmentsAmount = 0;
