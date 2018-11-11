@@ -7,6 +7,8 @@ namespace chess_console {
 
             Board b = new Board(8, 8);
 
+            Screen.showBoard(b);
+
             Console.ReadLine();
 
         }

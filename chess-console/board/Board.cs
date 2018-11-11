@@ -10,5 +10,9 @@
             this.columnsAmount = columnsAmount;
             pieces = new Piece[rowsAmount, columnsAmount];
         }
+
+        public Piece piece(int row, int column) {
+            return pieces[row, column];
+        }
     }
 }
