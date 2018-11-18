@@ -7,15 +7,23 @@ namespace chess_console {
         static void Main(string[] args) {
 
             try {
-                Board b = new Board(8, 8);
+                Match match = new Match();
 
-                b.putPiece(new Rook(b, Color.Black), new Position(0, 0));
-                b.putPiece(new Rook(b, Color.Black), new Position(1, 3));
-                b.putPiece(new King(b, Color.Black), new Position(0, 2));
+                while(!match.matchOver) {
+                    Console.Clear();
+                    Screen.showBoard(match.b);
+                    Console.WriteLine();
 
-                b.putPiece(new Rook(b, Color.White), new Position(3, 5));
+                    Console.Write("Origin: ");
+                    Position origin = Screen.readChessPosition().toPosition();
 
-                Screen.showBoard(b);
+                    Console.Write("Destiny: ");
+                    Position destiny = Screen.readChessPosition().toPosition();
+
+                    match.makeMove(origin, destiny);
+                }
+
+                Screen.showBoard(match.b);
             }
             catch (BoardException e) {
                 Console.WriteLine(e.Message);

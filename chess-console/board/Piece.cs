@@ -12,5 +12,9 @@
             this.color = color;
             movmentsAmount = 0;
         }
+
+        public void incrementMovmentAmnt() {
+            movmentsAmount++;
+        }
     }
 }

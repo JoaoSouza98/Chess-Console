@@ -52,6 +52,7 @@
     <Compile Include="chess\ChessPosition.cs" />
     <Compile Include="chess\King.cs" />
     <Compile Include="chess\Knight.cs" />
+    <Compile Include="chess\Match.cs" />
     <Compile Include="chess\Pawn.cs" />
     <Compile Include="chess\Queen.cs" />
     <Compile Include="chess\Rook.cs" />

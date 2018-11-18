@@ -34,6 +34,17 @@
             p.position = pos;
         }
 
+        public Piece removePiece(Position pos) {
+            if (piece(pos) == null) {
+                return null;
+            }
+
+            Piece aux = piece(pos);
+            aux.position = null;
+            pieces[pos.row, pos.column] = null;
+            return aux;
+        }
+
         //catch invalid position according to the board size
         public bool validPosition(Position pos) {
             if (pos.row < 0 || pos.row >= rowsAmount || pos.column < 0 || pos.column >= columnsAmount) {
