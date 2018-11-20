@@ -8,6 +8,12 @@
             this.column = column;
         }
 
+        //receives the paramenters of an existing position
+        public void defineValues(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
+
         public override string ToString() {
             return row
                 + ", "
