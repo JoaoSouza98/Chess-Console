@@ -5,8 +5,8 @@ namespace chess {
     class Match {
 
         public Board b { get; private set; }
-        private int turn;
-        private Color currentPlayer;
+        public int turn { get; private set; }
+        public Color currentPlayer { get; private set; }
         public bool matchOver { get; set; }
 
         public Match() {
@@ -17,11 +17,43 @@ namespace chess {
             showPieces();
         }
 
-        public void makeMove(Position origin, Position destiny) {
+        public void movePiece (Position origin, Position destiny) {
             Piece p = b.removePiece(origin);
             p.incrementMovmentAmnt();
             Piece capturedPiece = b.removePiece(destiny);
             b.putPiece(p, destiny);
+        }
+
+        public void makeAMove(Position origin, Position destiny) {
+            movePiece(origin, destiny);
+            turn++;
+            changePlayer();
+        }
+
+        public void validateOriginPosition(Position pos) {
+            if (b.piece(pos) == null) {
+                throw new BoardException("There isn't a piece at this position!");
+            }
+            if (currentPlayer != b.piece(pos).color) {
+                throw new BoardException("This isn't one of your pieces!");
+            }
+            if (!b.piece(pos).avaliableMoves()) {
+                throw new BoardException("There isn't avaliable moves for this piece!");
+            }
+        }
+        
+        public void validateDestinyPosition(Position origin, Position destiny) {
+            if (!b.piece(origin).canMoveTo(destiny)) {
+                throw new BoardException("Invalid destiny position!");
+            }
+        }
+
+        private void changePlayer() {
+            if (currentPlayer == Color.White) {
+                currentPlayer = Color.Black;
+            } else {
+                currentPlayer = Color.White;
+            }
         }
 
         private void showPieces() {

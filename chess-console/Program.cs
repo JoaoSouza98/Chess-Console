@@ -10,24 +10,35 @@ namespace chess_console {
                 Match match = new Match();
 
                 while(!match.matchOver) {
-                    Console.Clear();
-                    Screen.showBoard(match.b);
-                    Console.WriteLine();
+                    try {
+                        Console.Clear();
+                        Screen.showBoard(match.b);
+                        Console.WriteLine();
+                        Console.WriteLine("Turn: " + match.turn);
+                        Console.WriteLine("Waiting for next move: " + match.currentPlayer);
 
-                    Console.Write("Origin: ");
-                    Position origin = Screen.readChessPosition().toPosition();
 
-                    bool[,] validMoves = match.b.piece(origin).possibleMoves();
+                        Console.WriteLine();
+                        Console.Write("Origin: ");
+                        Position origin = Screen.readChessPosition().toPosition();
+                        match.validateOriginPosition(origin);
 
-                    Console.Clear();
-                    Screen.showBoard(match.b, validMoves);
+                        bool[,] validMoves = match.b.piece(origin).possibleMoves();
 
-                    Console.WriteLine();
+                        Console.Clear();
+                        Screen.showBoard(match.b, validMoves);
 
-                    Console.Write("Destiny: ");
-                    Position destiny = Screen.readChessPosition().toPosition();
+                        Console.WriteLine();
 
-                    match.makeMove(origin, destiny);
+                        Console.Write("Destiny: ");
+                        Position destiny = Screen.readChessPosition().toPosition();
+                        match.validateDestinyPosition(origin, destiny);
+
+                        match.makeAMove(origin, destiny);
+                    } catch (BoardException e) {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
                 }
 
                 Screen.showBoard(match.b);
