@@ -11,11 +11,7 @@ namespace chess_console {
 
                 while(!match.matchOver) {
                     try {
-                        Console.Clear();
-                        Screen.showBoard(match.b);
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + match.turn);
-                        Console.WriteLine("Waiting for next move: " + match.currentPlayer);
+                        Screen.showMatch(match);
 
 
                         Console.WriteLine();
