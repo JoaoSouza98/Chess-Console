@@ -14,6 +14,9 @@ namespace chess_console {
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.turn);
             Console.WriteLine("Waiting for next move: " + match.currentPlayer);
+            if (match.check) { // == true
+                Console.WriteLine("CHECK!");
+            }
         }
 
         public static void showCapturedPieces(Match match) {

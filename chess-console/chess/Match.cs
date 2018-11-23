@@ -10,19 +10,20 @@ namespace chess {
         public bool matchOver { get; set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
-
+        public bool check { get; private set; }
 
         public Match() {
             b = new Board(8, 8);
             turn = 1;
             currentPlayer = Color.White;
             matchOver = false;
+            check = false;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             showPieces();
         }
 
-        public void movePiece (Position origin, Position destiny) {
+        public Piece movePiece (Position origin, Position destiny) {
             Piece p = b.removePiece(origin);
             p.incrementMovmentAmnt();
             Piece capturedPiece = b.removePiece(destiny);
@@ -30,10 +31,34 @@ namespace chess {
             if (capturedPiece != null) {
                 captured.Add(capturedPiece);
             }
+
+            return capturedPiece;
+        }
+
+        public void undoMove(Position origin, Position destiny, Piece capturedPiece) {
+            Piece p = b.removePiece(destiny);
+            p.decrementMovmentAmnt();
+            if (capturedPiece != null) {
+                b.putPiece(capturedPiece, destiny);
+                captured.Remove(capturedPiece);
+            }
+            b.putPiece(p, origin);
         }
 
         public void makeAMove(Position origin, Position destiny) {
-            movePiece(origin, destiny);
+            Piece capturedPiece = movePiece(origin, destiny);
+
+            if (isInCheck(currentPlayer)) {
+                undoMove(origin, destiny, capturedPiece);
+                throw new BoardException("You cannot put yourself in CHECK!");
+            }
+
+            if (isInCheck(opponent(currentPlayer))) {
+                check = true;
+            } else {
+                check = false;
+            }
+
             turn++;
             changePlayer();
         }
@@ -85,6 +110,39 @@ namespace chess {
             return aux;
         }
 
+
+        private Color opponent(Color color) {
+            if (color == Color.White) {
+                return Color.Black;
+            } else {
+                return Color.White;
+            }
+        }
+
+
+        private Piece king(Color color) {
+            foreach (Piece x in inGamePieces(color)) {
+                if (x is King) {
+                    return x;
+                }
+            }
+            return null; //caso não tem rei (o que não deve acontecer numa partida de xadrez) retorna nulo
+        }
+
+        public bool isInCheck(Color color) {
+            Piece k = king(color);
+            if (k == null) { //<--should never happen, only implemented for keep the good practices
+                throw new BoardException("There is no " + color + " king");
+            }
+
+            foreach (Piece x in inGamePieces(opponent(color))) {
+                bool[,] array = x.possibleMoves();
+                if (array[k.position.row, k.position.column]) { // == true omitido
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void placeNewPiece(char column, int row, Piece piece) {
             b.putPiece(piece, new ChessPosition(column, row).toPosition());
