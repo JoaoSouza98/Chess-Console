@@ -13,9 +13,15 @@ namespace chess_console {
             showCapturedPieces(match);
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.turn);
-            Console.WriteLine("Waiting for next move: " + match.currentPlayer);
-            if (match.check) { // == true
-                Console.WriteLine("CHECK!");
+            if (!match.matchOver) {
+                Console.WriteLine("Waiting for next move: " + match.currentPlayer);
+                if (match.check) { // == true
+                    Console.WriteLine("CHECK!");
+                }
+            }
+            else {
+                Console.WriteLine("CHECKMATE!");
+                Console.WriteLine("Winner: " + match.currentPlayer);
             }
         }
 
@@ -89,7 +95,7 @@ namespace chess_console {
             } else {
                 
                 if (piece.color == Color.White) {
-                Console.Write(piece);
+                    Console.Write(piece);
                 } else {
                     ConsoleColor aux = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Yellow;

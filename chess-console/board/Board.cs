@@ -23,7 +23,7 @@
         public bool IsTherePiece(Position pos) {
             validatePosition(pos);
 
-            return piece(pos) != null;
+            return piece(pos) != null; //<-- boolean expression
         }
 
         public void putPiece(Piece p, Position pos) {
