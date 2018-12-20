@@ -32,6 +32,24 @@ namespace chess {
                 captured.Add(capturedPiece);
             }
 
+            // # Special Move - Castling - King side (roque pequeno) # //
+            if (p is King && destiny.column == origin.column + 2) {
+                Position originR = new Position(origin.row, origin.column + 3);
+                Position destinyR = new Position(origin.row, origin.column + 1);
+                Piece R = b.removePiece(originR);
+                R.incrementMovmentAmnt();
+                b.putPiece(R, destinyR);
+            }
+
+            // # Special Move - Castling - Queen side (roque grande) # //
+            if (p is King && destiny.column == origin.column - 2) {
+                Position originR = new Position(origin.row, origin.column - 4);
+                Position destinyR = new Position(origin.row, origin.column - 1);
+                Piece R = b.removePiece(originR);
+                R.incrementMovmentAmnt();
+                b.putPiece(R, destinyR);
+            }
+            
             return capturedPiece;
         }
 
@@ -43,6 +61,24 @@ namespace chess {
                 captured.Remove(capturedPiece);
             }
             b.putPiece(p, origin);
+
+            // # Special Move - Castling - King side (roque pequeno) # //
+            if (p is King && destiny.column == origin.column + 2) {
+                Position originR = new Position(origin.row, origin.column + 3);
+                Position destinyR = new Position(origin.row, origin.column + 1);
+                Piece R = b.removePiece(destinyR);
+                R.decrementMovmentAmnt();
+                b.putPiece(R, originR);
+            }
+            
+            // # Special Move - Castling - Queen side (roque grande) # //
+            if (p is King && destiny.column == origin.column - 2) {
+                Position originR = new Position(origin.row, origin.column - 4);
+                Position destinyR = new Position(origin.row, origin.column - 1);
+                Piece R = b.removePiece(destinyR);
+                R.decrementMovmentAmnt();
+                b.putPiece(R,originR);
+            }
         }
 
         public void makeAMove(Position origin, Position destiny) {
@@ -186,7 +222,7 @@ namespace chess {
             placeNewPiece('b', 1, new Knight(b, Color.White));
             placeNewPiece('c', 1, new Bishop(b, Color.White));
             placeNewPiece('d', 1, new Queen(b, Color.White));
-            placeNewPiece('e', 1, new King(b, Color.White));
+            placeNewPiece('e', 1, new King(b, Color.White, this));
             placeNewPiece('f', 1, new Bishop(b, Color.White));
             placeNewPiece('g', 1, new Knight(b, Color.White));
             placeNewPiece('h', 1, new Rook(b, Color.White));
@@ -203,7 +239,7 @@ namespace chess {
             placeNewPiece('b', 8, new Knight(b, Color.Black));
             placeNewPiece('c', 8, new Bishop(b, Color.Black));
             placeNewPiece('d', 8, new Queen(b, Color.Black));
-            placeNewPiece('e', 8, new King(b, Color.Black));
+            placeNewPiece('e', 8, new King(b, Color.Black, this));
             placeNewPiece('f', 8, new Bishop(b, Color.Black));
             placeNewPiece('g', 8, new Knight(b, Color.Black));
             placeNewPiece('h', 8, new Rook(b, Color.Black));
