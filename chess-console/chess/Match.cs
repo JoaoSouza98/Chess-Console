@@ -122,6 +122,19 @@ namespace chess {
                 throw new BoardException("You cannot put yourself in CHECK!");
             }
 
+            Piece p = b.piece(destiny);
+
+            // # Special Move - Promotion # //
+            if (p is Pawn) {
+                if ((p.color == Color.White && destiny.row == 0) || p.color == Color.Black && destiny.row == 7) {
+                    p = b.removePiece(destiny);
+                    pieces.Remove(p);
+                    Piece queen = new Queen(b, p.color);
+                    b.putPiece(queen, destiny);
+                    pieces.Add(queen);
+                }
+            }
+
             if (isInCheck(opponent(currentPlayer))) {
                 check = true;
             } else {
@@ -130,13 +143,12 @@ namespace chess {
 
             if (testCheckmate(opponent(currentPlayer))) {
                 matchOver = true;
-            } 
+            }
             else {
                 turn++;
                 changePlayer();
             }
-
-            Piece p = b.piece(destiny);
+            
 
             // # Special Move - En Passant # //
             if (p is Pawn && (destiny.row == origin.row - 2 || destiny.row == origin.row + 2)) {
